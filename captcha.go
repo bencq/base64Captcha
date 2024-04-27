@@ -44,6 +44,21 @@ func (c *Captcha) Generate() (id, b64s, answer string, err error) {
 	return
 }
 
+// Generate generates a random id, base64 image string or an error if any
+func (c *Captcha) GenerateSpecific(mId string) (id, b64s, answer string, err error) {
+	id, content, answer := c.Driver.GenerateSpecificIdQuestionAnswer(mId)
+	item, err := c.Driver.DrawCaptcha(content)
+	if err != nil {
+		return "", "", "", err
+	}
+	err = c.Store.Set(id, answer)
+	if err != nil {
+		return "", "", "", err
+	}
+	b64s = item.EncodeB64string()
+	return
+}
+
 // Verify by a given id key and remove the captcha value in store,
 // return boolean value.
 // if you has multiple captcha instances which share a same store.

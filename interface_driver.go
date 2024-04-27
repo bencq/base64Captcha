@@ -6,4 +6,6 @@ type Driver interface {
 	DrawCaptcha(content string) (item Item, err error)
 	//GenerateIdQuestionAnswer creates rand id, content and answer
 	GenerateIdQuestionAnswer() (id, q, a string)
+
+	GenerateSpecificIdQuestionAnswer(mId string) (id, q, a string)
 }
